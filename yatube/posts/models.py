@@ -85,14 +85,12 @@ class Follow(models.Model):
         on_delete=models.CASCADE,
         related_name='following',
         verbose_name='Автор',
-        null=True
     )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='follower',
         verbose_name='Подписчик',
-        null=True
     )
 
     class Meta:
@@ -103,4 +101,4 @@ class Follow(models.Model):
         ]
 
     def __str__(self):
-        return self.user
+        return self.user.username
