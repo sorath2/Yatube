@@ -96,7 +96,8 @@ class Follow(models.Model):
     class Meta:
         ordering = ['-author']
         constraints = [
-            models.UniqueConstraint(fields=['author', 'user'], name='follow constraint')
+            models.UniqueConstraint(fields=['author', 'user'],
+                                    name='follow constraint')
         ]
 
     def __str__(self):
