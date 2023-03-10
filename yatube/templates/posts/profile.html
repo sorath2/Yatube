@@ -7,10 +7,12 @@
       <div class="container py-5">       
         <div class="mb-5"> 
         <h1>Все посты пользователя {{ author.get_full_name }} </h1>
-        <h3>Всего постов: {{ posts_count }} </h3>
+        <h3>Всего постов: {{ author.posts.count }}</h3>
+        <h6>Всего подписчиков: {{ author.following.count }};   Подписан на авторов: {{ author.follower.count }}</h6>
         {% if user.is_authenticated %}
-        {% if request.user != author%}
+        {% if author != request.user %}
         {% if following %}
+        <h6>Вы подписаны на этого автора</h6>
           <a
             class="btn btn-lg btn-light"
             href="{% url 'posts:profile_unfollow' author.username %}" role="button"
