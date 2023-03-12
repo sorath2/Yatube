@@ -9,7 +9,7 @@ from ..models import Group, Post
 User = get_user_model()
 
 
-class PostModelTest(TestCase):
+class PostMUrlTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -65,6 +65,7 @@ class PostModelTest(TestCase):
             'posts/profile.html': f'/profile/{self.user}/',
             'posts/post_detail.html': f'/posts/{self.post.pk}/',
             'posts/create_post.html': '/create/',
+            'posts/follow.html': '/follow/',
         }
         for template, address in templates_url_names.items():
             with self.subTest(address=address):

@@ -299,10 +299,18 @@ class FollowTests(TestCase):
         """Авторизованный пользователь может подписываться
             на других пользователей и удалять их из подписок"""
         count_follow = Follow.objects.filter(user=self.user).count()
-        Follow.objects.create(user=self.user, author=self.user3)
+        data_follow = {'user': self.authorized_client,
+                       'author': self.user3}
+        self.authorized_client.post(
+            reverse('posts:profile_follow', kwargs={
+                    'username': self.user3.username}),
+            data=data_follow, follow=True)
         count_follow_new = Follow.objects.filter(user=self.user).count()
         self.assertEqual(count_follow + 1, count_follow_new)
-        Follow.objects.filter(user=self.user, author=self.user3).delete()
+        self.authorized_client.post(
+            reverse('posts:profile_unfollow', kwargs={
+                'username': self.user3.username}),
+            data=data_follow, follow=True)
         count_follow_new = Follow.objects.filter(user=self.user).count()
         self.assertEqual(count_follow, count_follow_new)
 

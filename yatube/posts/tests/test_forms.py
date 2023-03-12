@@ -133,14 +133,22 @@ class CommentFormsTests(TestCase):
             только авторизованным пользователем'''
         comment_count = Comment.objects.count()
         form_data = {'text': 'Тестовый комментарий'}
-        response = self.guest_client.post(reverse('posts:add_comment',
-                                          kwargs={'post_id': self.post.id}),
-                                          data=form_data,
-                                          follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.OK)
+        response_guest = self.guest_client.post(
+            reverse('posts:add_comment', kwargs={'post_id': self.post.id}),
+            data=form_data, follow=True
+        )
+        self.assertEqual(response_guest.status_code, HTTPStatus.OK)
         self.assertNotEqual(Comment.objects.count(),
                             comment_count + 1,
                             'Ошибочно добавленный комментарий')
+        response_auth = self.authorized_client.post(
+            reverse('posts:add_comment', kwargs={'post_id': self.post.id}),
+            data=form_data, follow=True
+        )
+        self.assertEqual(response_auth.status_code, HTTPStatus.OK)
+        self.assertEqual(Comment.objects.count(),
+                         comment_count + 1,
+                         'Комментарий не добавился')
 
     def test_create_comment_in_post_detail_page(self):
         '''Проверка что комментарий появляется на странице поста'''

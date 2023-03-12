@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ..models import Group, Post
+from ..models import Group, Post, Comment
 
 User = get_user_model()
 
@@ -20,15 +20,22 @@ class PostModelTest(TestCase):
             author=cls.user,
             text='Тестовый пост, длиной превышающий 15 символов',
         )
+        cls.comment = Comment.objects.create(
+            author=cls.user,
+            text='Тестовый комментарий',
+        )
 
     def test_models_have_correct_object_names(self):
         """Проверяем, что у моделей корректно работает __str__."""
         group = PostModelTest.group
         name = group.title
         post = PostModelTest.post
-        text = post.text[:15]
+        text_post = post.text[:15]
+        comment = PostModelTest.comment
+        text_comment = comment.text[:15]
         self.assertEqual(name, str(group), 'Ошибка в модели Group')
-        self.assertEqual(text, str(post), 'Ошибка в модели Post')
+        self.assertEqual(text_post, str(post), 'Ошибка в модели Post')
+        self.assertEqual(text_comment, str(comment), 'Ошибка в модели Comment')
 
     def test_verbose_name(self):
         """verbose_name в полях совпадает с ожидаемым."""
